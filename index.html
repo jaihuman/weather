@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOCARTION JS</title>
+  <style>
+    .spans {
+      color: #b6d21e;
+      font-size: 48px;
+      float: right;
+      margin-top: -128px;
+      position: absolute;
+      display: inline-block;
+      margin-left: 1071px
+    }
+
+
+    .Country {
+      font-size: 50px;
+      color: chocolate;
+      text-align: center;
+      margin-left: 524px;
+    }
+
+    .month {
+      font-size: 24px;
+      color: darkgreen;
+    }
+
+    .leap {
+      font-size: 24px;
+      color: darkgreen;
+    }
+
+    .mogo p {
+      margin-right: 67px;
+    }
+
+    .name {
+      color: darkblue;
+      font-size: 27px;
+    }
+
+    .mogo {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      margin-top: 75px;
+      float: right;
+    }
+
+    .conteainer {
+      background-image: url("img/santosh3.jpg");
+    }
+
+    body {
+      background-image: url("img/santosh3.jpg");
+    }
+
+    h1 {
+      position: relative;
+    }
+
+    h3 {
+      font-size: 20px;
+      color: darkorange;
+      margin-left: 89px;
+    }
+    .sea{color:#00ff95;}
+    .label{color:#3f51b5;}
+
+    .help {
+      width: 400px;
+    }
+    .hum{color:#00ff95;}
+    .hummidty{color:#b3e3cf;}
+
+    .revers{font-size: 22px;
+            color:#00ff95;
+    }
+    .time{color:#b3e3cf;}
+
+    @media screen and (max-width:768px) {
+      .container {
+        max-width: 100%;
+      }
+
+      .Country {
+        font-size: 44px;
+        color: #b3e3cf;
+        text-align: center;
+        margin-left: 67px;
+      }
+
+      h3 {
+        font-size: 20px;
+        color: #00ff95;
+        margin-left:0px;
+      }
+
+      .help {
+        width: 176px;
+      }
+
+      .spans {
+        margin-left: 238px;
+        color: #9ee7d6;
+        font-size: 42px;
+        margin-top: -124x;
+      }
+
+      .body {
+        background-image: none;
+      }
+
+      .mogo p {
+        margin-right: 0px;
+      }
+      .name{color: #d2dde3;}
+      
+
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="conteainer">
+    <div class="row">Weather Report</div>
+    <form action="">
+      <label> choose city<input type="search" name="city"></label>
+      <button type="" class="btn">submit</button>
+      <span class="more"></spa>
+
+    </form>
+  </div>
+
+
+
+  <script>
+    document.querySelector("form").addEventListener("submit", function(e)
+    {
+      e.preventDefault()
+      let city = this.city.value;
+      document.querySelector(".more").innerHTML = "";
+      document.querySelector(".more").style = "";
+      let div = document.createElement("div");
+      let sys = document.createElement("div")
+      let main = document.createElement("h2");
+      let coord = document.createElement("p");
+      let wind = document.createElement("p");
+      const time=new Date().toLocaleTimeString();
+      console.log(time);
+
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=60de0533988adfba6425af674ebac019`)
+        .then(i => i.json())
+        .then(i => 
+        {
+          // cons
+          // let timezone = document.creatElement("h3");
+          let visibility = document.createElement("p");
+          let weather = document.createElement("p");
+          let name = document.createElement("div")
+          let humidity = document.createElement("p");
+
+          for (let j in i)
+          {
+            console.log(i.main.temp - 273.15);
+            if (j == "main") {
+              main.innerHTML = `<h2><span class="spans">${(i.main.temp - 273.15).toFixed(2)}°C</h2>`
+              main.innerHTML += `<p class="hum"> Humidity-<span class="hummidty">${i.main.humidity}</span></p> `
+               main.innerHTML+=`<p class="sea" > Sea level- <span class="label">${i.main.sea_level}</span></p>`
+            }
+            else if (j == "coord") {
+              coord.innerHTML = `<p> Longitude-<span class="box">${i.coord.lon}</span></p>`;
+              coord.innerHTML+=`<p> Leatitute -<span class="box-1">${i.coord.lat}</span></p>`;
+            }
+            else if (j == "wind") {
+              wind.innerHTML = `<p>Wind-<span class="give">${(i.wind.speed)}.mph</span></p>`;
+
+            }
+            else if (j == "sys") {
+              sys.innerHTML = `<div class="open"> <h1><span class="Country">Country-${i.sys.country}</span></h1>`
+              sys.innerHTML += `<div class="mogo"> <p><span class ="leap">Date-${new Date(Number(i.sys.sunset + "000")).toLocaleDateString()}</span></p><p><span class="month"> sunrise-${(new Date(Number(i.sys.sunrise + "000")).toLocaleTimeString())}</span></p></div> </div>`
+              //  sys.innerHTML +=`<p ><span class ="leap"> sunset-${new Date(Number(i.sys.sunset+"000").toLocaleTimeString())}</span></p></div>`
+              sys.innerHTML+=`<p class="revers" >Time - <span class="time">${time}</span></p>`
+            }
+            else if (j == "weather") {
+              weather.innerHTML = `<p>weather -<span class="loader">${i.weather[0].main}</span<p> <span cl></p>`
+              if (i.weather[0].main = "Haza") {
+                document.body.style.background = "../../Downloads/santosh.jpg";
+                document.body.style.cover = "cover";
+                document.body.style.backgroundPosition = "center";
+              }
+              else if (i.weather[0].main == "cloud") {
+                document.body.style.background = "img/santosh3.jpg";
+
+                document.body.style.cover = "cover";
+                document.body.style.backgroundPosition = "center";
+              }
+              else if (i.weather[0].main == "description") {
+                document.body.style.background = "img/santosh4.jpg"
+                document.body.style.cover = "cover";
+                document.body.style.backgroundPosition = "center";
+
+              }
+
+              else if (i.weather[0].smoke == "smoke") {
+                document.body.style.background = "";
+              }
+
+
+            }
+            else if (j == "name") {
+              name.innerHTML = `<div class="help"><h3>City Name-<span class="name">${i.name}</span></h3></div>`
+
+
+            }
+          }
+
+
+          div.appendChild(sys);
+          div.appendChild(name);
+          div.appendChild(main);
+          div.appendChild(coord);
+          div.appendChild(wind);
+          document.querySelector(".more").appendChild(div);
+        }
+        )
+
+
+    });
+
+
+
+  </script>
+
+
+
+</body>
+
+</html>
